@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
+    ndkPath "C:/Android-NDK"
+    defaultConfig {
+        applicationId "com.android.support"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode 1
+        versionName "3.2"
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
+        signingConfig signingConfigs.debug
+    }
+    buildTypes {
+        release {
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path file("C:/ModMenu64/app/src/main/jni/Android.mk")
+        }
+    }
+    packagingOptions {
+        pickFirst 'lib/arm64-v8a/libModMenu.so'
+        pickFirst 'lib/armeabi-v7a/libModMenu.so'
+        pickFirst 'lib/x86/libModMenu.so'
+    }
+}
+
+//dependencies must be placed below 'android' brackets to get it work on AIDE
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
